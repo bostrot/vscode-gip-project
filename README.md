@@ -10,6 +10,7 @@ Crate C++ projects with the right config.
 
 OSX: `xcode-select install`
 Windows: nothing
+Linux: `apt-get install g++ gcc gdb`
 
 ## Extension Settings
 
@@ -22,6 +23,10 @@ No known issues yet.
 ## Release Notes
 
 Users appreciate release notes as you update your extension.
+
+### 0.0.4
+
+Added linux support.
 
 ### 0.0.2
 

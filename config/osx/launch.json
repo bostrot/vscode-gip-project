@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
       {
-        "name": "C/C++: Launch",
+        "name": "C/C++: Starten",
         "program": "${fileDirname}/${fileBasenameNoExtension}",
         "externalConsole": true,
         "type": "cppdbg",
@@ -13,7 +13,7 @@
             "moduleLoad": false,
             "programOutput": false,
             "trace": false,
-            "engineLogging": false,
+            "engineLogging": false
         },
         "showDisplayString": false,
         "args": [],

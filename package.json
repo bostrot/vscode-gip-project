@@ -1,8 +1,9 @@
 {
-  "name": "gip-projekt",
+	"name": "gip-projekt",
+	"author": "Eric Trenkel",
 	"displayName": "GIP Projekt",
 	"description": "Extension that helps setting up VSCode projects for use in the university module GIP",
-	"version": "0.0.2",
+	"version": "0.1.0",
 	"repository": "https://github.com/bostrot/vscode-gip-project",
 	"engines": {
 		"vscode": "^1.67.0"
@@ -11,7 +12,7 @@
 		"Other"
 	],
 	"activationEvents": [
-        "onCommand:gip-projekt.createproject"
+		"onCommand:gip-projekt.createproject"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {

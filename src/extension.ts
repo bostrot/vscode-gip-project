@@ -63,13 +63,16 @@ function createWorkspace(context: vscode.ExtensionContext,
 		return;
 	}
 
-	// Copy config files and main.cpp sample
-	var configPath = context.extensionUri.path + '/config/windows/';
-	var configFiles = ['launch.json', 'tasks.json', 'main.cpp'];
+	// Copy config files
+	var configFiles = ['launch.json', 'tasks.json'];
 	for (var i in configFiles) {
 		vscode.workspace.fs.copy(vscode.Uri.parse(configPath + configFiles[i]), 
 			vscode.Uri.parse(`${fullPath.path}/.vscode/${configFiles[i]}`));
 	}
+
+	// Copy sample main.cpp
+	vscode.workspace.fs.copy(vscode.Uri.parse(configPath + 'main.cpp'), 
+		vscode.Uri.parse(`${fullPath.path}/main.cpp`));
 
 	// Show success message
 	vscode.window.showInformationMessage('Projekt erfolgreich erstellt!');
