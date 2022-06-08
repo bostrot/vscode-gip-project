@@ -3,6 +3,7 @@
 	"displayName": "GIP Projekt",
 	"description": "Extension that helps setting up VSCode projects for use in the university module GIP",
 	"version": "0.0.2",
+	"repository": "https://github.com/bostrot/vscode-gip-project",
 	"engines": {
 		"vscode": "^1.67.0"
 	},
