@@ -11,16 +11,15 @@ export function activate(context: vscode.ExtensionContext) {
 		// Set folder picker options
 		const options: vscode.OpenDialogOptions = {
 			canSelectFolders: true,
-			openLabel: 'Auswählen',
+			openLabel: 'Ordner auswählen',
 		};
-		console.log("CWD: " + process.cwd());
+		
 		// Set project name
 		vscode.window.showInputBox().then((projectName) => {
 			if (projectName !== null) {
 				// Pick folder
 				vscode.window.showOpenDialog(options).then(folderUri => {
 					if (folderUri && folderUri[0]) {
-						vscode.window.showInformationMessage(folderUri[0].fsPath);
 						createWorkspace(context, projectName!, folderUri[0]);
 					}
 				});
@@ -36,6 +35,7 @@ function createWorkspace(context: vscode.ExtensionContext,
 	// Create folder
 	var fullPath = vscode.Uri.parse(`${folderUri.path}/${projectName}`);
 	vscode.workspace.fs.readDirectory(fullPath).then((onfulfilled) => {
+		vscode.window.showErrorMessage('Fehler 01: Ein Ordner mit dem Projektnamen existiert bereits.');
 		return;
 	});
 	vscode.workspace.fs.createDirectory(fullPath);
@@ -44,25 +44,35 @@ function createWorkspace(context: vscode.ExtensionContext,
 	vscode.workspace.updateWorkspaceFolders(0,
 		undefined,
 		{ uri: fullPath, name: projectName });
+
 	// Copy Platform specific configs
+	var configPath = "";
 	switch (process.platform) {
 		case 'win32':
-			// Copy config files
-			var configPath = context.extensionUri.path + '/config/windows/';
-			var configFiles = ['launch.json', 'tasks.json', 'c_cpp_properties.json'];
-			for (var i in configFiles) {
-				vscode.workspace.fs.copy(vscode.Uri.parse(configPath + configFiles[i]), 
-					vscode.Uri.parse(`${fullPath.path}/.vscode/${configFiles[i]}`));
-			}
-			// Copy sample main.cpp
-			vscode.workspace.fs.copy(vscode.Uri.parse(`${context.extensionUri.path}/config/main.cpp`), 
-				vscode.Uri.parse(`${fullPath.path}/main.cpp`));
+			configPath = context.extensionUri.path + '/config/windows/';
 			break;
 		case 'darwin':
+			configPath = context.extensionUri.path + '/config/osx/';
 			break;
-		case 'linux':
+		case 'linux': // or wsl
+			configPath = context.extensionUri.path + '/config/linux/';
 			break;
 	}
+	if (configPath === '') {
+		vscode.window.showErrorMessage('Fehler 02: Unbekanntes Betriebssystem.');
+		return;
+	}
+
+	// Copy config files and main.cpp sample
+	var configPath = context.extensionUri.path + '/config/windows/';
+	var configFiles = ['launch.json', 'tasks.json', 'main.cpp'];
+	for (var i in configFiles) {
+		vscode.workspace.fs.copy(vscode.Uri.parse(configPath + configFiles[i]), 
+			vscode.Uri.parse(`${fullPath.path}/.vscode/${configFiles[i]}`));
+	}
+
+	// Show success message
+	vscode.window.showInformationMessage('Projekt erfolgreich erstellt!');
 }
 
 // this method is called when your extension is deactivated
