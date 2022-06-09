@@ -8,9 +8,24 @@ Crate C++ projects with the right config.
 
 ## Requirements
 
-OSX: `xcode-select install`
-Windows: nothing
-Linux: `apt-get install g++ gcc gdb`
+https://packages.msys2.org/base/mingw-w64-gcc
+
+### OSX
+
+`xcode-select --install`
+
+#### CImg
+
+https://www.xquartz.org/
+-I/opt/X11/include
+
+### Windows
+
+nothing special
+
+### Linux
+
+`apt-get install g++ gcc gdb`
 
 ## Extension Settings
 
