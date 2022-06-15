@@ -8,7 +8,7 @@
         "-std=gnu++17",
         "-fdiagnostics-color=always",
         "-g",
-        "${file}",
+        "*.cpp",
         "-lgdi32",
         "-o",
         "${fileDirname}\\${fileBasenameNoExtension}.exe"
