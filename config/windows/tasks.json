@@ -5,13 +5,15 @@
       "label": "C/C++: g++.exe Aktive Datei kompilieren",
       "command": "g++.exe",
       "args": [
-        "-std=gnu++17",
-        "-fdiagnostics-color=always",
         "-g",
+        "-std=c++17",
+        "-fdiagnostics-color=always",
+        "-I.",
         "*.cpp",
         "-lgdi32",
         "-o",
-        "${fileDirname}\\${fileBasenameNoExtension}.exe"
+        "${fileDirname}\\${fileBasenameNoExtension}.exe",
+        "-pthread"
       ],
       "options": {
         "cwd": "${fileDirname}",

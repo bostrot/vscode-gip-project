@@ -5,11 +5,18 @@
         "label": "C/C++: g++ Aktive Datei kompilieren",
         "command": "g++",
         "args": [
-          "-fdiagnostics-color=always",
           "-g",
-          "${file}",
+          "-std=c++17",
+          "-fdiagnostics-color=always",
+          "-Wno-c++11-narrowing",
+          "-I.",
+          "-I/opt/X11/include",
+          "-L/opt/X11/lib",
           "-o",
-          "${fileDirname}/${fileBasenameNoExtension}"
+          "build/${relativeFileDirname}",
+          "*.cpp",
+          "-lX11",
+          "-pthread"
         ],
         "options": {
           "cwd": "${fileDirname}"

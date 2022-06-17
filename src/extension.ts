@@ -64,7 +64,7 @@ function createWorkspace(context: vscode.ExtensionContext,
 	}
 
 	// Copy config files
-	var configFiles = ['launch.json', 'tasks.json'];
+	var configFiles = ['launch.json', 'tasks.json', 'c_cpp_properties.json'];
 	for (var i in configFiles) {
 		vscode.workspace.fs.copy(vscode.Uri.parse(configPath + configFiles[i]), 
 			vscode.Uri.parse(`${fullPath.path}/.vscode/${configFiles[i]}`));
