@@ -1,5 +1,9 @@
 #!/bin/bash
 
+GIP_EXTENSION_VERSION=1.0.0
+CPPTOOLS_VERSION=v1.9.8
+EDITED_DATA_PATH=vscode-main/data
+
 VSCODE_OSX_LINK="https://code.visualstudio.com/sha/download?build=stable&os=darwin-universal"
 VSCODE_OSXARM_LINK="https://code.visualstudio.com/sha/download?build=stable&os=darwin-arm64"
 VSCODE_LINUX_LINK="https://code.visualstudio.com/sha/download?build=stable&os=linux-x64"
@@ -15,18 +19,17 @@ VSCODE_OSXARM_NAME=vscode-macos-arm
 VSCODE_LINUX_NAME=vscode-linux-x64
 VSCODE_WIN_NAME=vscode-win-x64
 
-EDITED_DATA_PATH=vscode-main/data
 
 VSCODE_MAC_URL=vscode-macos-x64
 VSCODE_OSXARM_PATH_URL=vscode-macos-arm
 VSCODE_LINUX_URL=vscode-linux-x64
 MINGW_URL=https://netcologne.dl.sourceforge.net/project/mingw-w64/Toolchains%20targetting%20Win64/Personal%20Builds/mingw-builds/8.1.0/threads-win32/sjlj/x86_64-8.1.0-release-win32-sjlj-rt_v6-rev0.7z
 CPPTOOLS_LINK=https://github.com/microsoft/vscode-cpptools/releases/download
-CPPTOOLS_VERSION=v1.9.8
 CPPTOOLS_WIN=cpptools-win64.vsix
 CPPTOOLS_LINUX=cpptools-linux.vsix
 CPPTOOLS_OSXARM=cpptools-osx-arm64.vsix
 CPPTOOLS_OSX=cpptools-osx.vsix
+GIP_EXTENSION_LINK=https://github.com/bostrot/vscode-gip-project/releases/download/v$GIP_EXTENSION_VERSION/gip-projekt-$GIP_EXTENSION_VERSION.vsix
 
 check_error () {
     vscode_create_errors=$(( vscode_create_errors+$? ));
@@ -117,17 +120,17 @@ prepare() {
     # Downloading everything
     echo -n "Extracting VSCode...           "
     mkdir -p downloads
-    7z x -o$VSCODE_OSX_PATH $VSCODE_OSX_PATH.zip > /dev/null 2>&1
+    7z x -aoa -bb0 -o$VSCODE_OSX_PATH $VSCODE_OSX_PATH.zip # > /dev/null 2>&1
     check_error
-    7z x -o$VSCODE_OSXARM_PATH $VSCODE_OSXARM_PATH.zip > /dev/null 2>&1
+    7z x -aoa -bb0 -o$VSCODE_OSXARM_PATH $VSCODE_OSXARM_PATH.zip # > /dev/null 2>&1
     check_error
-    7z x -o$VSCODE_LINUX_PATH-tmp1 $VSCODE_LINUX_PATH.tar.gz > /dev/null 2>&1
+    7z x -aoa -bb0 -o$VSCODE_LINUX_PATH-tmp1 $VSCODE_LINUX_PATH.tar.gz # > /dev/null 2>&1
     check_error
-    7z x -o$VSCODE_LINUX_PATH-tmp2 $VSCODE_LINUX_PATH-tmp1/$VSCODE_LINUX_NAME.tar > /dev/null 2>&1
+    7z x -aoa -bb0 -o$VSCODE_LINUX_PATH-tmp2 $VSCODE_LINUX_PATH-tmp1/$VSCODE_LINUX_NAME.tar # > /dev/null 2>&1
     check_error
     mv $VSCODE_LINUX_PATH-tmp2/VSCode-linux-x64 $VSCODE_LINUX_PATH
     check_error
-    7z x -o$VSCODE_WIN_PATH $VSCODE_WIN_PATH.zip > /dev/null 2>&1
+    7z x -aoa -bb0 -o$VSCODE_WIN_PATH $VSCODE_WIN_PATH.zip # > /dev/null 2>&1
     check_error
 
     check_no_error
@@ -267,6 +270,13 @@ pack () {
 
     check_no_error
 
+    # Getting GIP Extension
+    echo -n "Getting gip extension...       "
+    wget -q --show-progress $GIP_EXTENSION_LINK -O downloads/gip-projekt-$GIP_EXTENSION_VERSION.vsix
+    check_error
+
+    check_no_error
+
     # Copy extensions to data folders
     echo -n "Copying extensions...          "
     for extension in $EDITED_DATA_PATH/extensions/*;
@@ -286,6 +296,14 @@ pack () {
             check_error
         fi
     done
+    cp -u -n gip-projekt-$GIP_EXTENSION_VERSION.vsix $VSCODE_OSX_PATH/code-portable-data/extensions/
+    check_error
+    cp -u -n gip-projekt-$GIP_EXTENSION_VERSION.vsix $VSCODE_OSXARM_PATH/code-portable-data/extensions/
+    check_error
+    cp -u -n gip-projekt-$GIP_EXTENSION_VERSION.vsix $VSCODE_LINUX_PATH/data/extensions/
+    check_error
+    cp -u -n gip-projekt-$GIP_EXTENSION_VERSION.vsix $VSCODE_WIN_PATH/data/extensions/
+    check_error
 
     check_no_error
 
@@ -301,6 +319,7 @@ pack () {
     check_error
 
     check_no_error
+    
 
     # Extract cpptools
     echo -n "Extracting cpptools...         "
